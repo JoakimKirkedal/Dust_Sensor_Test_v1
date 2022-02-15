@@ -1,0 +1,84 @@
+
+char dustMsg[30];
+
+int smoke10;
+int preSmoke10;
+int smoke25;
+int preSmoke25;
+int smoke100;
+int preSmoke100;
+
+int env10;
+int preEnv10;
+int env25;
+int preEnv25;
+int env100;
+int preEnv100;
+
+
+void setup() {
+  // put your setup code here, to run once:
+Serial2.begin(9600,SERIAL_8N1, 13, -1);
+Serial.begin(115200);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+
+
+if (Serial2.read() == 0x42 && Serial2.read() == 0x4D){ 
+  int msgIdx = 0;
+for(int i = 0;i<30;i++){
+  while(!Serial2.available());
+    dustMsg[msgIdx++]= Serial2.read();
+}}
+preSmoke10 = smoke10;
+smoke10 = (dustMsg[2]*256)+dustMsg[3];
+if (preSmoke10 != smoke10){
+Serial.print("Smoke particles at 1 micrometer or less: ");
+Serial.print(smoke10);
+Serial.print(" ug/m3");
+Serial.println("");
+}
+preSmoke25 = smoke25;
+smoke25 = (dustMsg[4]*256)+dustMsg[5];
+if (preSmoke25 != smoke25){
+Serial.print("Smoke particles at 2.5 micrometer or less: ");
+Serial.print(smoke25);
+Serial.print(" ug/m3");
+Serial.println("");
+}
+preSmoke100 = smoke100;
+smoke100 = (dustMsg[6]*256)+dustMsg[7];
+if (preSmoke100 != smoke100){
+Serial.print("Smoke particles at 10 micrometer or less: ");
+Serial.print(smoke100);
+Serial.print(" ug/m3");
+Serial.println("");
+}
+preEnv10 = env10;
+env10 = (dustMsg[2]*256)+dustMsg[3];
+if (preEnv10 != env10){
+Serial.print("Dust particles at 1 micrometer or less: ");
+Serial.print(env10);
+Serial.print(" ug/m3");
+Serial.println("");
+}
+preEnv25 = env25;
+env25 = (dustMsg[4]*256)+dustMsg[5];
+if (preEnv25 != env25){
+Serial.print("Dust particles at 2.5 micrometer or less: ");
+Serial.print(env25);
+Serial.print(" ug/m3");
+Serial.println("");
+}
+preEnv100 = env100;
+env100 = (dustMsg[6]*256)+dustMsg[7];
+if (preEnv100 != env100){
+Serial.print("Dust particles at 10 micrometer or less: ");
+Serial.print(env100);
+Serial.print(" ug/m3");
+Serial.println("");
+}
+}
